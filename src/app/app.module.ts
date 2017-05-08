@@ -10,6 +10,10 @@ import { EventsComponent } from './events/events.component';
 
 import { EventsService } from './events.service';
 
+//MODULO DE FACEBOOK
+import { FacebookModule } from 'ngx-facebook';
+
+
 // RUTA
 const ROUTES = [
   {
@@ -34,7 +38,8 @@ const ROUTES = [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES) //añade la ruta a la app
+    RouterModule.forRoot(ROUTES), //añade la ruta a la app
+    FacebookModule.forRoot()
   ],
   providers: [EventsService], //añadir el servicio aqui
   bootstrap: [AppComponent]
