@@ -13,6 +13,12 @@ import { EventsService } from './events.service';
 //MODULO DE FACEBOOK
 import { FacebookModule } from 'ngx-facebook';
 
+//MODULO DE GOOGLE MAPS
+import { AgmCoreModule } from 'angular2-google-maps/core';
+
+//EVENTOS FACEBOOK
+//import { FacebookEventsModule } from 'facebook-events-by-location';
+
 
 // RUTA
 const ROUTES = [
@@ -39,7 +45,11 @@ const ROUTES = [
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES), //añade la ruta a la app
-    FacebookModule.forRoot()
+    FacebookModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyC-maeGYU-LxKvFNdp-APTGVQrNMsErmCA'
+    })
+    //FacebookEventsModule.forRoot()
   ],
   providers: [EventsService], //añadir el servicio aqui
   bootstrap: [AppComponent]

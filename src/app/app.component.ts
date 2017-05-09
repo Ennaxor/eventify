@@ -9,7 +9,9 @@ import {FacebookService, LoginResponse, LoginOptions, UIResponse, UIParams, FBVi
 })
 
 export class AppComponent {
-	title = 'app works!';
+	title = 'Login con FACEBOOK y mapa de GOOGLE';
+	lat: number = 51.678418;
+  	lng: number = 7.809007;
 
 	constructor(private fb: FacebookService) {
 		console.log('Initializing Facebook');

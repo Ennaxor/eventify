@@ -11,4 +11,9 @@
 <button class="btn btn-lg btn-primary btn-block" (click)="getLoginStatus()">
 	Get login status
 </button>
+
+<sebm-google-map [latitude]="lat" [longitude]="lng">
+  <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+</sebm-google-map>
+
 <router-outlet></router-outlet>
