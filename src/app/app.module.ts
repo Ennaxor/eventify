@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { EventsComponent } from './events/events.component';
 
 import { EventsService } from './events.service';
+import { UsersService } from './users.service';
 
 //MODULO DE FACEBOOK
 import { FacebookModule } from 'ngx-facebook';
@@ -16,8 +17,6 @@ import { FacebookModule } from 'ngx-facebook';
 //MODULO DE GOOGLE MAPS
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
-//EVENTOS FACEBOOK
-//import { FacebookEventsModule } from 'facebook-events-by-location';
 
 
 // RUTA
@@ -49,9 +48,8 @@ const ROUTES = [
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyC-maeGYU-LxKvFNdp-APTGVQrNMsErmCA'
     })
-    //FacebookEventsModule.forRoot()
   ],
-  providers: [EventsService], //añadir el servicio aqui
+  providers: [EventsService, UsersService], //añadir el servicio aqui
   bootstrap: [AppComponent]
 })
 export class AppModule { }

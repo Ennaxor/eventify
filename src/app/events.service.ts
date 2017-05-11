@@ -7,9 +7,9 @@ export class EventsService {
 
   constructor(private http: Http) { }
 
-  // Get all events from the API
+  // Get all events from the FACEBOOK API
   getAllEvents() {
-    return this.http.get('/api/posts')
+    return this.http.get('/api/events')
       .map(res => res.json());
   }
 }

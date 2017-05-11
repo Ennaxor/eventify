@@ -1,0 +1,1 @@
+declare var accessT:any;
