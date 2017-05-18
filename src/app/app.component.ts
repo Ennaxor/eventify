@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import {FacebookService, LoginResponse, LoginOptions, UIResponse, UIParams, FBVideoComponent} from 'ngx-facebook';
-import {FacebookEventsService} from 'facebook-events-by-location';
-import { UsersService } from './users.service';
 
 import { Http, Response, RequestOptions, Headers, Request, RequestMethod } from '@angular/http';
+
+import * as myGlobals from '../../globals'; 
+
+//Eventos de facebook
+import FbEvents from '../assets/fb-events-es6';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +23,13 @@ export class AppComponent {
   	zoom: number = 8;
 
   	private loggedIn = false;
+  	private fbEvent;
+  	private mytkn;
 
-  	
+  	//called first time before ngOninit()  	
 	constructor(private fb: FacebookService, 
-				private userService: UsersService,
-				private http: Http) {
+				private http: Http,
+				private router: Router) {
 
 		console.log('Initializing Facebook');
 
@@ -32,11 +38,44 @@ export class AppComponent {
 			version: 'v2.9'
 		});
 
-		/*this.headers = new Headers();
-	    this.headers.append("Content-Type", 'application/json');
-	    this.headers.append("Authorization", 'confidential data');*/
+		this.fbEvent = new FbEvents();
 
 	    this.loggedIn = !!localStorage.getItem('auth_token');
+	}
+
+	//called after the constructor and called  after the first ngOnChanges() 
+	ngOnInit(){
+		this.mytkn = localStorage.getItem('auth_token');
+		//var myLat;
+		//var myLong;
+		if(this.isLoggedIn()){
+			//podemos trabajar con los eventos
+			/*if(navigator.geolocation){
+				navigator.geolocation.getCurrentPosition(function(position){					
+					myLat = position.coords.latitude;		
+					myLong = position.coords.longitude;
+				});
+			}else{
+				//NO PODEMOS TRABAJAR
+			}*/
+
+			var eventOptions = {
+				lat: 38.389482,
+				lon: -0.4408048,
+				filter: true
+			}	
+			this.fbEvent.setToken(this.mytkn)
+				.then(() => {
+				  return this.fbEvent.getEvents(eventOptions);
+				})
+				.then(events => {
+				  console.log("count", events.length);
+				  console.log("first event", events[0]);
+				})
+				.catch(err => {
+				  console.log(err);
+				})
+		}
 	}
 
 
@@ -64,26 +103,11 @@ export class AppComponent {
 		this.fb.login(loginOptions)
 			.then((res: LoginResponse) => {
 				console.log('Logged in', res);
-				var aux = res.authResponse.accessToken;
-				let body = JSON.stringify(aux);
-				let headers = new Headers();
-    			headers.append('Content-Type', 'application/json');
-    			let options = new RequestOptions({ headers: headers });
-
-				return this.http.post('/login', {aux}, options)
-					.subscribe(
-						response => {
-							localStorage.setItem('auth_token', res.authResponse.accessToken);
-							this.loggedIn = true;
-						},
-						error => {
-							console.log(error.text());
-						}
-					);		
-
+    			localStorage.setItem('auth_token', res.authResponse.accessToken);
+    			myGlobals.setUSER_TOKEN(res.authResponse.accessToken);
+    			location.reload();
 		})
 			.catch(this.handleError);
-
 		
 	}
 
@@ -101,7 +125,6 @@ export class AppComponent {
 			.then(console.log.bind(console))
 			.catch(console.error.bind(console));
 	}
-
 
 	/**
 	* Get the user's profile

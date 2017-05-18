@@ -12,6 +12,10 @@
 	Get login status
 </button>
 
+<button *ngIf="isLoggedIn()" class="btn btn-lg btn-primary btn-block" (click)="logout()">
+  Logout
+</button>
+
 
 <sebm-google-map 
       [latitude]="lat"

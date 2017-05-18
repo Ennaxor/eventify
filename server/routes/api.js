@@ -9,37 +9,10 @@ const mongojs = require('mongojs');
 //mongodb://<dbuser>:<dbpassword>@ds157500.mlab.com:57500/eventify  //colecciones
 const db = mongojs('mongodb://ennaxor:r2904994@ds157500.mlab.com:57500/eventify', ['events']);
 
-//FACEBOOK
-const eventFacebook = require('facebook-events-by-location-core'); 
-//const localstorage = require('localStorage');
-
-
-var myevents = new eventFacebook({
-    "lat": 40.710803,
-    "lng": -73.964040
-});
-
-/*router.get('/logged', function (req, res) {
-   var data = req.params.data; // it contains the value foo
-})*/
-
-/*myevents.search().then(function (events){
-    console.log(JSON.stringify(events));
-}).catch(function (error){
-    console.error(JSON.stringify(error));
-});*/
 
 /* GET api listing. */
 router.get('/', (req, res) => {
   res.send('api works');
-});
-
-
-router.get('/login', function(req, res) {
-  if (!req.body.aux) {
-    return res.status(400).send("You must send the ID");
-  }  
-  res.status(201).send(req.body.aux);
 });
 
 // Get all posts

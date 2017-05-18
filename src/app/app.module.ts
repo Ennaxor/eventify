@@ -9,7 +9,6 @@ import { AppComponent } from './app.component';
 import { EventsComponent } from './events/events.component';
 
 import { EventsService } from './events.service';
-import { UsersService } from './users.service';
 
 //MODULO DE FACEBOOK
 import { FacebookModule } from 'ngx-facebook';
@@ -49,7 +48,7 @@ const ROUTES = [
       apiKey: 'AIzaSyC-maeGYU-LxKvFNdp-APTGVQrNMsErmCA'
     })
   ],
-  providers: [EventsService, UsersService], //añadir el servicio aqui
+  providers: [EventsService], //añadir el servicio aqui
   bootstrap: [AppComponent]
 })
 export class AppModule { }
