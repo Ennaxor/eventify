@@ -18,13 +18,15 @@ import FbEvents from '../assets/fb-events-es6';
 
 export class AppComponent {
 	title = 'Login con FACEBOOK y mapa de GOOGLE';
-	lat: number = 51.678418;
-  	lng: number = 7.809007;
-  	zoom: number = 8;
+	lat: number = 0;
+  	lng: number = 0;
+  	zoom: number = 12;
 
   	private loggedIn = false;
   	private fbEvent;
   	private mytkn;
+  	private myLat;
+  	private myLong;
 
   	//called first time before ngOninit()  	
 	constructor(private fb: FacebookService, 
@@ -45,39 +47,48 @@ export class AppComponent {
 
 	//called after the constructor and called  after the first ngOnChanges() 
 	ngOnInit(){
-		this.mytkn = localStorage.getItem('auth_token');
-		//var myLat;
-		//var myLong;
+		this.mytkn = localStorage.getItem('auth_token');		
 		if(this.isLoggedIn()){
 			//podemos trabajar con los eventos
-			/*if(navigator.geolocation){
-				navigator.geolocation.getCurrentPosition(function(position){					
-					myLat = position.coords.latitude;		
-					myLong = position.coords.longitude;
-				});
+			if(navigator.geolocation){
+				navigator.geolocation.getCurrentPosition((position) => {		
+					Promise.all([
+						this.myLat = position.coords.latitude,
+						this.myLong = position.coords.longitude,
+						this.lat = this.myLat,
+						this.lng = this.myLong
+					  ]).then(() => this.searchEvents());	
+				});				
 			}else{
 				//NO PODEMOS TRABAJAR
-			}*/
-
-			var eventOptions = {
-				lat: 38.389482,
-				lon: -0.4408048,
-				filter: true
-			}	
-			this.fbEvent.setToken(this.mytkn)
-				.then(() => {
-				  return this.fbEvent.getEvents(eventOptions);
-				})
-				.then(events => {
-				  console.log("count", events.length);
-				  console.log("first event", events[0]);
-				})
-				.catch(err => {
-				  console.log(err);
-				})
+			}
 		}
 	}
 
+	searchEvents(){
+		console.log(this.myLat);
+		console.log(this.myLong);
+		var eventOptions = {
+			lat: this.myLat,
+			lon: this.myLong,
+		//	since: 1500595200,
+		//	until: 1503187200,
+			filter: true
+		}	
+		this.fbEvent.setToken(this.mytkn)
+			.then(() => {
+			  return this.fbEvent.getEvents(eventOptions);
+			})
+			.then(events => {
+			  console.log("count", events.length);
+			  for(let i of events){
+			  		console.log("events:", i);
+			  }			  
+			})
+			.catch(err => {
+			  console.log(err);
+			})
+	}
 
 	/**
 	* Login with minimal permissions. This allows you to see their public profile only.
@@ -103,6 +114,7 @@ export class AppComponent {
 		this.fb.login(loginOptions)
 			.then((res: LoginResponse) => {
 				console.log('Logged in', res);
+				this.loggedIn = true;
     			localStorage.setItem('auth_token', res.authResponse.accessToken);
     			myGlobals.setUSER_TOKEN(res.authResponse.accessToken);
     			location.reload();
