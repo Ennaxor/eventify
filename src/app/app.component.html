@@ -1,52 +1,121 @@
-<h1>
-  {{title}}
-</h1>
-<button *ngIf="!isLoggedIn()" (click)="login()" class="btn btn-lg btn-primary btn-block">
-    Login
-</button>
-<button *ngIf="!isLoggedIn()" (click)="loginWithOptions()" class="btn btn-lg btn-primary btn-block">
-    Login with Options
-</button>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+         <img alt="Brand" src="../assets/logo.png">       
+      </a>
 
-<button *ngIf="isLoggedIn()" class="btn btn-lg btn-primary btn-block" (click)="getLoginStatus()">
-	Get login status
-</button>
+      <button *ngIf="!isLoggedIn()" (click)="loginWithOptions()" type="button" class="btn btn-primary pull-right navbar-btn mylogin">
+          <i class="fa fa-facebook left"></i> Sign in with Facebook
+      </button>
+      <button *ngIf="isLoggedIn()" (click)="logout()" class="btn btn-danger pull-right navbar-btn" >
+          <i class="fa fa-sign-out" aria-hidden="true"></i> Logout
+    </button>
 
-<button *ngIf="isLoggedIn()" class="btn btn-lg btn-primary btn-block" (click)="logout()">
-  Logout
-</button>
+     
 
+    </div>
+  </div>
+</nav>
+<div id="wrapper" class="toggled">
+    <div id="sidebar-wrapper" >
+      <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+              <span *ngIf="isLoggedIn()" [innerHTML]="faceName">
+                  
+              </span>
+              <span *ngIf="!isLoggedIn()">
+                  Welcome!
+              </span>
+          </li>
+          <li *ngIf="!isLoggedIn()">
+              <span class="italic centered"> Sign in with your Facebook account to check the events nearby you! </span>
+              
+          </li>
+          <li *ngIf="isLoggedIn()">
+              <span class="italic"> Where are you at? </span><br>
+              <i class="fa fa-location-arrow" aria-hidden="true"></i>
+              <span class="coords" [innerHTML]="myCoords"></span>
+          </li>
+          <li *ngIf="isLoggedIn()">
+              <span class="italic"> Town: </span><br>
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+              <span class="coords" [innerHTML]="userCity"></span>              
+          </li>
+          <li *ngIf="isLoggedIn()">
+              <span class="italic"> City: </span><br>
+              <i class="fa fa-caret-right" aria-hidden="true"></i>
+              <span class="coords" [innerHTML]="userProv"></span>    
+          </li>
+          <li *ngIf="isLoggedIn()" class="btn-events">
+            <button (click)="drawEvents()" class="btn btn-special" >
+                <i class="fa fa-bookmark" aria-hidden="true"></i> Show Events
+            </button>
+          </li>
 
-<sebm-google-map 
-      [latitude]="lat"
-      [longitude]="lng"
-      [zoom]="zoom"
-      [disableDefaultUI]="false"
-      [zoomControl]="false"
-      (mapClick)="mapClicked($event)">
-    
-      <sebm-google-map-marker 
-          *ngFor="let m of markers; let i = index"
-          (markerClick)="clickedMarker(m.label, i)"
-          [latitude]="m.lat"
-          [longitude]="m.lng"
-          [label]="m.label"
-          [markerDraggable]="m.draggable"
-          (dragEnd)="markerDragEnd(m, $event)">
           
-        <sebm-google-map-info-window>
-          <strong>InfoWindow content</strong>
-        </sebm-google-map-info-window>
-        
-      </sebm-google-map-marker>
-      
-    <!--  <sebm-google-map-circle [latitude]="lat + 0.3" [longitude]="lng" 
-          [radius]="5000"
-          [fillColor]="'red'"
-          [circleDraggable]="true"
-          [editable]="true">
-      </sebm-google-map-circle>-->
+      </ul>
+      <span class="italic bottom">Roxanne López van Dooren © Ingeniería Multimedia</span>    
+    </div>
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <sebm-google-map 
+                          [latitude]="lat"
+                          [longitude]="lng"
+                          [zoom]="zoom"
+                          [disableDefaultUI]="false"
+                          [zoomControl]="false"
+                          (mapClick)="mapClicked($event)"
+                          [usePanning]="true"
+                          *ngIf="isLoggedIn()">
+                        
+                          <sebm-google-map-marker 
+                              *ngFor="let m of markers; let i = index"
+                              (markerClick)="clickedMarker(m.label, i)"
+                              [latitude]="m.lat"
+                              [longitude]="m.lng"
+                              [markerDraggable]="m.draggable"
+                              (dragEnd)="markerDragEnd(m, $event)">
+                              
+                            <sebm-google-map-info-window> 
+                              <div id="iw-container">
+                                  <div class="iw-title">{{m.label}}</div>
+                                  <div class="iw-content">
+                                      <div class="iw-subTitle">What is it about?</div>
+                                      <img src="{{m.picture}}" height="115" width="83">
+                                      <p>{{m.description}}</p>
+                                      <div class="iw-subTitle">{{m.attending}} <b>attending</b></div>
+                                      <div class="when">
+                                        <div class="iw-subTitle ">When is it?</div>
+                                        <p class="s-time">From the {{m.start_time}} to the {{m.end_time}}</p>
+                                      </div>
+                                      <div class="where">
+                                        <div class="iw-subTitle ">Where is it?</div>
+                                        <p class="s-time">{{m.place}}</p>
+                                      </div>
+                                      
+                                  </div>
+                                  <div class="iw-bottom-gradient"></div>
+                              </div>
+                            </sebm-google-map-info-window>
+                           
+                          </sebm-google-map-marker>
+                          
+                        <!--  <sebm-google-map-circle [latitude]="lat + 0.3" [longitude]="lng" 
+                              [radius]="5000"
+                              [fillColor]="'red'"
+                              [circleDraggable]="true"
+                              [editable]="true">
+                          </sebm-google-map-circle>-->
 
-</sebm-google-map>
-
-<router-outlet></router-outlet>
+                    </sebm-google-map>
+                    <img *ngIf="!isLoggedIn()" class="" alt="google maps" src="../assets/maps.jpg"/>
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

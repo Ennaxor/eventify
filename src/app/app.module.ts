@@ -16,6 +16,7 @@ import { FacebookModule } from 'ngx-facebook';
 //MODULO DE GOOGLE MAPS
 import { AgmCoreModule } from 'angular2-google-maps/core';
 
+import {GoogleMapsAPIWrapper} from "../../node_modules/angular2-google-maps/core/services/google-maps-api-wrapper";
 
 
 // RUTA
@@ -48,7 +49,7 @@ const ROUTES = [
       apiKey: 'AIzaSyC-maeGYU-LxKvFNdp-APTGVQrNMsErmCA'
     })
   ],
-  providers: [EventsService], //añadir el servicio aqui
+  providers: [EventsService, GoogleMapsAPIWrapper], //añadir el servicio aqui
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../events.service';
 
+import { Event } from '../Event';
+
 @Component({
 	selector: 'app-events',
 	templateUrl: './events.component.html',
@@ -9,15 +11,19 @@ import { EventsService } from '../events.service';
 export class EventsComponent implements OnInit {
 
 	//inicializar eventos en array vacío
-	events: any = [];
+	//events: any = [];
+	events: Event[];
+
 
 	constructor(private eventsService: EventsService) { }
 
-	ngOnInit() {		
-		// Retrieve events from the API
-	    this.eventsService.getAllEvents().subscribe(events => {
-	      this.events = events;
-	    });
+	ngOnInit() {				
+	//	this.showEvents();
+	}
+
+	showEvents(){
+	//	this.events = this.eventsService.getAllEvents();
+		//console.log("events in component", this.events);
 	}
 
 }
