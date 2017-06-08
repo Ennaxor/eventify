@@ -15,7 +15,6 @@ import { FacebookModule } from 'ngx-facebook';
 
 //MODULO DE GOOGLE MAPS
 import { AgmCoreModule } from 'angular2-google-maps/core';
-
 import {GoogleMapsAPIWrapper} from "../../node_modules/angular2-google-maps/core/services/google-maps-api-wrapper";
 
 
@@ -31,8 +30,6 @@ const ROUTES = [
     component: EventsComponent
   }
 ];
-
-
 
 @NgModule({
   declarations: [

@@ -8,12 +8,10 @@ import { Subject } from 'rxjs/Subject';
 import FbEvents from '../assets/fb-events-es6';
 import { Event } from './Event';
 
-//SERVICIO COMPARTIDO ENTRE APP COMPONENT Y EVENTS COMPONENT
 @Injectable()
 export class EventsService {
 	private fbEvent;
   	private mytkn;
-
   	
   	events: Event[] = [];
 
@@ -23,10 +21,8 @@ export class EventsService {
 	}
 
 	getAllEvents(): Observable<Event[]> {
-		//console.log("events in service in all events:", this.events);	
 		localStorage.setItem("storageEvents", JSON.stringify(this.events));
         return Observable.of(this.events);
-        //return this.events;
     }
 
 
@@ -56,8 +52,6 @@ export class EventsService {
 					    longitude: i.venue.location.longitude,
 					    place: i.venue.location.city
 					});
-
-				 	//console.log("events in service:", this.events);
 			  }	 
 			  localStorage.setItem("storageEvents", JSON.stringify(this.events));
 			  

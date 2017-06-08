@@ -7,35 +7,37 @@ const bodyParser = require('body-parser');
 // Las rutas API
 const api = require('./server/routes/api');
 
+// Creación de la aplicación EXPRESS
 const app = express();
 
-// Parsers for POST data
+// Para parsear peticiones POST en el futuro
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Point static path to dist
+// Apuntar el PATH a nuestra carpeta DIST
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Set our api routes
+// Setteando la ruta de nuestra API
 app.use('/api', api);
 
-// Catch all other routes and return the index file
+// En nuestra app, siempre devolver nuestro INDEX en cualquier ruta
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist/index.html'));
 });
 
+/*** * * * * * * * * * ***/
 /**
- * Get port from environment and store in Express.
+ * Asignamos el puerto para la app de EXPRESS
  */
 const port = process.env.PORT || '4000';
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Creando el Servidor HTTP...
  */
 const server = http.createServer(app);
 
 /**
- * Listen on provided port, on all network interfaces.
+ * Puerto abierto en el 4000 
  */
 server.listen(port, () => console.log(`API running on localhost:${port}`));

@@ -52,7 +52,7 @@ export class AppComponent {
   	private userProv;
 
 
-  	//called first time before ngOninit()  	
+  	//llamada por primera vez antes del ngOnInit() 	
 	constructor(private fb: FacebookService, 
 				private http: Http,
 				private router: Router,
@@ -78,7 +78,6 @@ export class AppComponent {
 		this.mapsAPILoader.load().then(() => {
 		    console.log('google script loaded');
 		    this.geocoder = new google.maps.Geocoder();
-
 
 		    if (localStorage.getItem("auth_token") != null) {
 				this.mytkn = localStorage.getItem('auth_token');		
@@ -151,13 +150,10 @@ export class AppComponent {
 						if(j.latlng == latlngAux){
 							latAdded = 0.002;
 							lngAdded = 0.002;
-							console.log("ya existe uno");
 						} 
 						else{
 							latAdded = 0;
-							lngAdded = 0;
-							console.log("no existe", i.latitude);
-							
+							lngAdded = 0;							
 						}
 					}		
 				}	
@@ -187,7 +183,7 @@ export class AppComponent {
 	}
 	
 	/**
-	* Login with minimal permissions. This allows you to see their public profile only.
+	* LOGIN CON PERMISOS MÍNIMOS. Sólo recibimos el perfil.
 	*/
 	login() {
 		this.fb.login()
@@ -198,7 +194,7 @@ export class AppComponent {
 	}
 
 	/**
-	* Login with additional permissions/options
+	* LOGIN CON MÁS PERMISOS. Recibimos lista de amigos, de eventos...
 	*/
 	loginWithOptions() {
 		const loginOptions: LoginOptions = {
@@ -285,23 +281,6 @@ export class AppComponent {
 	}
 
 /* ------------ GOOGLE MAPS ------------ */
-
-	setCenterMap(){
-		//console.log(this.myLat);		
-		//convertir en number
-		this.lat = +this.myLat;
-		this.lng = +this.myLong;
-		console.log(this.lat);
-		var latlng = new google.maps.LatLng(this.lat, this.lng);
-		console.log(latlng);
-		//this.map.panTo(new google.maps.LatLng(this.lat, this.lng));
-		//mapa
-	    /*this.mapApiWrapper.getNativeMap()
-  			.then((map)=> {
-  				map.setCenter(new google.maps.LatLng(0.321, 0.321));	
-			});*/
-		this.mapApiWrapper.panTo(latlng);
-	}
 
 	clickedMarker(label: string, index: number) {
     	console.log(`clicked the marker: ${label || index}`)
